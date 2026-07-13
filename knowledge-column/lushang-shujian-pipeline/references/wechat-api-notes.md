@@ -10,6 +10,48 @@ body = json.dumps(payload, ensure_ascii=False).encode('utf-8')
 requests.post(url, data=body, headers={'Content-Type': 'application/json; charset=utf-8'})
 ```
 
+## 账号信息修改 API（个人订阅号）
+
+| 功能 | API 端点 | 个人订阅号 | 备注 |
+|------|---------|-----------|------|
+| 修改头像 | `account/modifyheadimage` | ✅ | 先 `media/upload` 上传素材 → 用 `head_img_media_id` + 裁剪坐标 |
+| 修改介绍 | `account/modifysignature` | ✅ | 每月限 5 次（`modify_quota: 5`） |
+| 修改名称 | `account/modifynickname` | ❌ 报 40066 | 必须去 mp.weixin.qq.com 后台手动改，审核 1-3 天 |
+
+`getaccountbasicinfo` 可查看当前状态和修改配额：
+```
+GET /cgi-bin/account/getaccountbasicinfo?access_token=TOKEN
+→ nickname, signature_info {signature, modify_used_count, modify_quota},
+  head_image_info {head_image_url, modify_used_count, modify_quota}
+```
+
+### 修改头像流程
+
+```bash
+# 1. 上传图片素材
+curl -F "media=@avatar.png" \
+  "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=${TOKEN}&type=image"
+# → {"media_id": "xxx", ...}
+
+# 2. 裁剪设置（x1/y1/x2/y2 为 0-1 比例，全图用 0.0~1.0）
+curl -X POST "https://api.weixin.qq.com/cgi-bin/account/modifyheadimage?access_token=${TOKEN}" \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{"head_img_media_id":"MEDIA_ID","x1":0.0,"y1":0.0,"x2":1.0,"y2":1.0}'
+# → {"errcode":0,"errmsg":"ok"}
+```
+
+### 修改介绍（签名）
+
+```python
+body = json.dumps({'signature': '介绍文字...'}, ensure_ascii=False).encode('utf-8')
+requests.post(
+    f'https://api.weixin.qq.com/cgi-bin/account/modifysignature?access_token={token}',
+    data=body,
+    headers={'Content-Type': 'application/json; charset=utf-8'}
+)
+# → {"errcode":0,"errmsg":"ok"}
+```
+
 ## 个人订阅号 API 能力矩阵
 
 | 功能 | API 字段 | 个人订阅号 | 认证服务号 |
@@ -65,7 +107,7 @@ requests.post(url, data=body, headers={'Content-Type': 'application/json; charse
 - 任何解释文章定位的 meta 文字
 
 ✅ 底部只需：
-- 栏目署名（「路上书简 · 通勤路上的读书伙伴」）
+- 栏目署名（「走正路的AI笔记 · AI 负责效率，走正路负责品味」）
 - 播客收听入口（小宇宙 / Apple Podcasts / 喜马拉雅）
 - 点赞/在看/分享引导（可选）
 - 下周预告（总结期）

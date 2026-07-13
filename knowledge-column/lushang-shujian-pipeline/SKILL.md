@@ -1,16 +1,19 @@
 ---
 name: zouzhenglu-ai-notes
 description: "走正路的AI笔记内容流水线：拆书→脚本→音频→图文→知识卡片。"
-version: 1.4.1
+version: 1.5.0
 triggers:
+  - 走正路的AI笔记
+  - 走正路
   - 路上书简
   - 知识栏目
   - 通勤读书
   - 拆书生成
-  - 断舍离
   - 经验归档
   - 记录错误
   - wiki
+  - 公众号改名
+  - 公众号头像
 platforms: [linux]
 ---
 
@@ -40,6 +43,35 @@ platforms: [linux]
 ```
 
 ## 完整流程
+
+### Phase 0: 书池管理与选书
+
+用户提出候选书后：
+
+1. **排列 Season 顺序**：按叙事线排序（如 Season 1「轻装上阵」：减→减到极致→加对的→加到极致→回到日常），确认每本书的定位和衔接逻辑
+2. **写入 pool.yaml**：每本书含 id/title/author/original_title/status/priority/reader/genre/difficulty/tags/related_books/notes
+3. **核对 epub 元数据**（关键步骤，见下方）
+4. **推送 git**：确认书池纳入版本管理
+
+#### ⚠️ 书池元数据核对（必须）
+
+用户上传 epub 后，**不要凭记忆填书名和作者**。必须提取 epub 元数据：
+
+```python
+import zipfile, re
+with zipfile.ZipFile('book-pool/xxx.epub') as z:
+    opf = z.read([f for f in z.namelist() if f.endswith('.opf')][0]).decode()
+    title = re.search(r'<dc:title[^>]*>(.+?)</dc:title>', opf).group(1)
+    creator = re.search(r'<dc:creator[^>]*>(.+?)</dc:creator>', opf).group(1)
+    print(f'title={title}, author={creator}')
+```
+
+**常见错误**：
+- 作者音译不准（如「格雷戈·麦基翁」→ epub 原文是「格雷戈·麦吉沃恩」）
+- 书名漏标点（如「最重要的事只有一件」→ epub 原文是「最重要的事，只有一件」）
+- 书名自创后缀（如「数字极简主义」→ epub 原文是「数字极简」）
+
+**原则：epub 元数据是权威来源，pool.yaml 必须与其一致。**
 
 ### Phase 1: 获取下一本书
 
@@ -515,7 +547,7 @@ Agent 产出内容时，必须明确告知用户内容来源：
 
 ## 参考文档
 
-- `references/wechat-api-notes.md` — JSON 编码致命陷阱（ensure_ascii）、标题 8 字限制、个人号 API 权限矩阵、草稿分页删除
+- `references/wechat-api-notes.md` — JSON 编码致命陷阱（ensure_ascii）、标题 8 字限制、个人号 API 权限矩阵、账号信息修改 API（头像/介绍/名称）、草稿分页删除
 - `references/article-format-rules.md` — 文章里不要放的东西（阅读指南文字、API 做不到的标注）、音频命名规范
 - `references/article-layout.md` — 公众号文章排版组件模板和 CSS 规范（已对齐实战验证）
 - `references/episode-image-strategy.md` — 分集文章一图一文策略：题图设计规范、正文排版、占位符发布流程
