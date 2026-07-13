@@ -49,7 +49,9 @@ requests.post(url, data=body, headers={'Content-Type': 'application/json; charse
 ```
 /cgi-bin/material/add_material?type=voice
 ```
-但仅限嵌入公众号文章播放，不能用于外部播客平台（无公网 URL）。
+仅限嵌入公众号文章播放，不能用于外部播客平台（无公网 URL）。
+
+**音频嵌入限制**：`mpvoice` 标签被微信 API 拦截（`invalid content`），无法通过 API 自动在文章中嵌入音频。语音素材只能上传到素材库，插入文章需在后台编辑器手动操作。
 
 ## 文章底部规范
 

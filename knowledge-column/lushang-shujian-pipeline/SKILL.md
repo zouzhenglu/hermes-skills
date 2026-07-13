@@ -159,6 +159,16 @@ python3 -c "import pymupdf; doc=pymupdf.open('文件路径'); [print(p.get_text(
 | **分集文章**（`--episodes`） | 7 篇独立文章，每篇 1 张题图 | 每天一篇跟音频同步推送，读者按天追读 |
 
 分集文章每篇遵循 **一图一文策略**（见 `references/episode-image-strategy.md`）：
+
+⚠️ **分集文章必须是可读图文，不是播客 show notes。** 详见 `references/episode-content-rules.md`。禁止只放时间轴和金句——用户不看音频也要能获得完整价值。每篇文章必须使用 `references/article-layout.md` 中的模板组件（章节标题 H()、金句卡片 Q()、暖色提示框 X()、故事块 S()、表格 T()、正文段落 P()），禁止纯段落堆砌。
+
+**分集文章 = 音频脚本全文 + 模板排版。** 用户明确要求「接受重复」——文章和音频讲同一内容，但文章是图文版。不要把脚本内容裁掉一半。脚本多少字，文章就保留多少字，只加排版组件。
+
+**音频嵌入**：微信 API 不支持自动嵌入音频（mpvoice 被拦截，audio 被过滤）。文章顶部放提示，用户后台编辑器手动插入。详见 `references/episode-content-rules.md`。
+
+**发布排期**：
+- 分集文章 07:00 发 → 音频 07:30 推（文章先出，用户知道今天聊什么再听）
+- 综合文章周日 20:00 发（全周完结后，不剧透）
 - **1 张题图**（Hero SVG→PNG）作为文章封面和顶部视觉锚点
 - **正文全用 HTML/CSS** 排版：卡片/表格/渐变色块/左边框/进度条，不依赖额外图片
 - 结构框架和金句用 CSS 实现，不用图片——更灵活、更稳定、维护成本更低
@@ -168,6 +178,8 @@ python3 -c "import pymupdf; doc=pymupdf.open('文件路径'); [print(p.get_text(
 **字体版权（致命）**：Linux 服务器渲染 SVG 时，`font-family` 不能写 `'PingFang SC'` 或 `'Microsoft YaHei'`——这些字体不存在会导致中文变豆腐块（□），且为专有字体不可嵌入分发。必须使用 `'Noto Sans CJK SC'`（SIL Open Font License）。安装：`sudo apt-get install fonts-noto-cjk`。
 
 **核心原则：文章做音频做不到的事。** 音频擅长讲故事和情绪，文章擅长表格、清单、框架、对比。文章不是音频的文字版，是音频的「使用说明书」。
+
+⚠️ **生成文章前必须先读取** `references/article-layout.md`，严格按照其中的组件模板、配色变量和禁止项执行。配色从 `config/themes.yaml` 读取（当前主题：`forest` 墨绿森林）。
 
 #### 5a. 先生成 Markdown 结构稿
 
@@ -548,3 +560,11 @@ hermes send -t telegram "MEDIA:/path/to/file.mp3"
 - 任何解释文章定位的 meta 文字 —— 文章是成品，不是说明书
 
 文章底部只需：栏目署名 + 干净的结尾。多余的标注一律不要。
+
+### 草稿箱 API 检索 Bug
+
+微信 `draft/batchget` + `draft/get` 取回的标题永远是乱码（哪怕 push 时编码正确）。**不要依赖 API 检索来验证或清理草稿。** 只能：
+
+1. 推送新草稿 — 编码正确，后台正常显示
+2. 用户手动在后台清理旧草稿
+3. 不要尝试用 API 程序化清理（会因为标题乱码匹配不上而误删正常草稿）
