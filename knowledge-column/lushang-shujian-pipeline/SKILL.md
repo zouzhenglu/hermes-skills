@@ -1,7 +1,7 @@
 ---
 name: lushang-shujian-pipeline
 description: "路上书简知识栏目全自动内容流水线：拆书→脚本→音频→图文→知识卡片。"
-version: 1.3.0
+version: 1.4.0
 triggers:
   - 路上书简
   - 知识栏目
@@ -56,6 +56,10 @@ platforms: [linux]
 2. **Web 搜索** → 搜索「书名 核心观点」「书名 目录」
 3. **Agent 内置知识** → 知名畅销书可直接凭记忆产出（告知用户）
 4. **标记 needs_content** → 以上都不够时，请用户补充
+
+**电子书文件命名规范：** 使用中文书名，不用罗马音或英文音译。
+- ✅ `断舍离.epub` `刻意练习.pdf` `atomic-habits.epub`（原文书名）
+- ❌ `danshari.epub` `keyilianxi.pdf`（罗马音/拼音，无法一眼辨识）
 
 如果文件是 PDF/EPUB：
 ```
@@ -135,7 +139,8 @@ python3 -c "import pymupdf; doc=pymupdf.open('文件路径'); [print(p.get_text(
 
    # 发送文章
    hermes send -t telegram -f /path/to/article.md -s "标题"
-   4. **保存脚本**：
+
+4. **保存脚本**：
       ```bash
       python3 ~/knowledge-column/scripts/pipeline.py new-book {book_id}
       ```
@@ -499,11 +504,17 @@ Agent 产出内容时，必须明确告知用户内容来源：
 ## 参考文档
 
 - `references/wechat-api-notes.md` — JSON 编码致命陷阱（ensure_ascii）、标题 8 字限制、个人号 API 权限矩阵、草稿分页删除
-- `references/article-format-rules.md` — 文章里不要放的东西（阅读指南文字、API 做不到的标注）、音频命名规范 `{book_id}_{书名}_ep{NN}.mp3`
+- `references/article-format-rules.md` — 文章里不要放的东西（阅读指南文字、API 做不到的标注）、音频命名规范
 - `references/tts-voices.md` — Yunxi vs Yunyang 对比、语速选择、时长估算
 - `references/pitfalls.md` — 语音选型、人设迭代、周一引读空洞等已知坑
-- `references/episode-image-strategy.md` — 分集文章三层图文策略：题图/结构图/金句卡设计规范、结构图类型速查表
+- `references/episode-image-strategy.md` — 分集文章三层图文策略：题图/结构图/金句卡设计规范
 - `templates/article_wechat.html` — WeChat 兼容 HTML 模板
+
+## 关联资源（外部）
+
+- **Wiki:** `~/wiki/` (GitHub: `zouzhenglu/media-wiki`) — 自媒体经验知识库，含错误记录和自检清单
+- **Git 仓库:** `zouzhenglu/hermesAliRepo` ← 栏目代码+产出；`zouzhenglu/hermes-skills` ← Skills 备份
+- **认证:** `~/.git-credentials` 存 GitHub token，无需每次手动输入
 
 ### 语音选择常见错误
 - ❌ YunyangNeural +10% 语速 → 像新闻播报，开头太赶，听众体验差
