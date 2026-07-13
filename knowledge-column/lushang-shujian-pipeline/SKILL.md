@@ -1,7 +1,7 @@
 ---
 name: lushang-shujian-pipeline
 description: "路上书简知识栏目全自动内容流水线：拆书→脚本→音频→图文→知识卡片。"
-version: 1.4.0
+version: 1.4.1
 triggers:
   - 路上书简
   - 知识栏目
@@ -179,7 +179,7 @@ python3 -c "import pymupdf; doc=pymupdf.open('文件路径'); [print(p.get_text(
 
 **核心原则：文章做音频做不到的事。** 音频擅长讲故事和情绪，文章擅长表格、清单、框架、对比。文章不是音频的文字版，是音频的「使用说明书」。
 
-⚠️ **生成文章前必须先读取** `references/article-layout.md`，严格按照其中的组件模板、配色变量和禁止项执行。配色从 `config/themes.yaml` 读取（当前主题：`forest` 墨绿森林）。
+⚠️ **生成文章前必须先读取** `references/article-layout.md`（排版组件模板，CSS 规则已经过微信实际发布验证）和 `references/episode-image-strategy.md`（分集图文策略）。**两份文档必须一致** — 如果一处改了 CSS 允许/禁止项，另一处要同步更新。配色从 `config/themes.yaml` 读取（当前主题：`forest` 墨绿森林）。WeChat CSS 兼容性速查见 `references/wechat-css-compatibility.md`。
 
 #### 5a. 先生成 Markdown 结构稿
 
@@ -517,9 +517,12 @@ Agent 产出内容时，必须明确告知用户内容来源：
 
 - `references/wechat-api-notes.md` — JSON 编码致命陷阱（ensure_ascii）、标题 8 字限制、个人号 API 权限矩阵、草稿分页删除
 - `references/article-format-rules.md` — 文章里不要放的东西（阅读指南文字、API 做不到的标注）、音频命名规范
+- `references/article-layout.md` — 公众号文章排版组件模板和 CSS 规范（已对齐实战验证）
+- `references/episode-image-strategy.md` — 分集文章一图一文策略：题图设计规范、正文排版、占位符发布流程
+- `references/wechat-css-compatibility.md` — WeChat CSS 实测兼容表：什么能用什么会被过滤
+- `references/svg-fallback-images.md` — SVG 降级图片方案：image_generate 不可用时用 SVG+cairosvg 出图
 - `references/tts-voices.md` — Yunxi vs Yunyang 对比、语速选择、时长估算
 - `references/pitfalls.md` — 语音选型、人设迭代、周一引读空洞等已知坑
-- `references/episode-image-strategy.md` — 分集文章三层图文策略：题图/结构图/金句卡设计规范
 - `templates/article_wechat.html` — WeChat 兼容 HTML 模板
 
 ## 关联资源（外部）
@@ -533,12 +536,20 @@ Agent 产出内容时，必须明确告知用户内容来源：
 - ❌ 长句连排不加标点 → TTS 会一口气读完，没有自然停顿
 - ✅ YunxiNeural +0% 语速 → 讲故事风格，自带节奏，适合中文讲书
 
+### 排版规则自相矛盾（已修复）
+`references/article-layout.md` 和 `references/episode-image-strategy.md` 曾对 CSS 可用性给出矛盾指导（前者禁止 box-shadow/linear-gradient/border-radius>4px，后者基于实战验证允许）。教训：
+- **排版规则以 `episode-image-strategy.md`（微信实际发布验证）为准**
+- **`article-layout.md` 必须与其对齐** — 改一边时检查另一边
+- **微信 CSS 兼容性应以实测为准，不应基于防御性假设** — 速查见 `references/wechat-css-compatibility.md`
+
 ### TTS 失败的降级方案
 如果 edge-tts 不可用，使用 Hermes 内置的 text_to_speech 工具。
 
 ### 图片生成需要 FAL_KEY
 baoyu-infographic 和 image_generate 需要 FAL.ai API Key。
 用户去 https://fal.ai 免费注册，设 `FAL_KEY=xxx` 到 `~/.hermes/.env` 即可。
+
+**降级方案**：当 image_generate 不可用时，用 SVG → cairosvg → PNG 生成几何/文字类视觉资产（头像、封面、卡片）。详见 `references/svg-fallback-images.md`。
 
 ### 用户无法访问服务器文件
 用 `hermes send` 通过已配置的 gateway 平台（Telegram/微信等）发送：
