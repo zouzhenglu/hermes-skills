@@ -1,0 +1,10 @@
+# Usage tracking (runtime files, not skills)
+.usage.json
+.usage.json.lock
+.curator_state
+.bundled_manifest
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo

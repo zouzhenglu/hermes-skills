@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{{BOOK_TITLE}} - 路上书简</title></head>
+<body style="margin:0;padding:0;background:#f5f0eb;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;color:#2c2c2c;line-height:1.8;font-size:15px;">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 顶部渐变标题 -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="background:linear-gradient(135deg,#5b7a6f 0%,#8bab9e 100%);padding:40px 24px 36px;text-align:center;">
+  <div style="color:rgba(255,255,255,0.7);font-size:12px;letter-spacing:2px;margin-bottom:8px;">路 上 书 简 · 第 {{ISSUE_NUM}} 期</div>
+  <div style="color:#fff;font-size:28px;font-weight:700;letter-spacing:1px;margin-bottom:6px;">{{BOOK_TITLE}}</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:14px;">{{BOOK_AUTHOR}} · {{READER_NAME}} 解读</div>
+</div>
+
+<div style="max-width:640px;margin:0 auto;padding:0 20px;">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 阅读指南卡片 -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="background:#fff;border-radius:8px;padding:20px 20px 16px;margin:24px 0 0;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+  <div style="font-size:13px;color:#999;margin-bottom:8px;">▎阅读指南</div>
+  <div style="font-size:15px;color:#555;line-height:1.9;">
+    这不是音频的文字版。这是一份<b>使用说明书</b>——表格、清单、框架，音频讲不了的，都在这里。
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 全局视角：全书骨架（树形结构） -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:28px 0 0;">
+  <div style="font-size:18px;font-weight:700;color:#5b7a6f;margin-bottom:4px;padding-left:8px;border-left:3px solid #5b7a6f;">全书骨架 · 30 秒看懂</div>
+  <div style="font-size:13px;color:#aaa;margin-bottom:12px;padding-left:11px;">{{BOOK_TITLE}} 的核心结构</div>
+  <div style="background:#fff;border-radius:8px;padding:20px 16px 4px;box-shadow:0 1px 4px rgba(0,0,0,0.06);font-size:14px;line-height:2;">
+    {{FRAMEWORK_TREE}}
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 核心框架表 -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:28px 0 0;">
+  <div style="font-size:18px;font-weight:700;color:#5b7a6f;margin-bottom:4px;padding-left:8px;border-left:3px solid #5b7a6f;">{{TABLE_TITLE}}</div>
+  <div style="font-size:13px;color:#aaa;margin-bottom:12px;padding-left:11px;">建议截图保存</div>
+  <div style="background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);overflow-x:auto;">
+    {{CORE_TABLE}}
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 金句卡片（深色背景 + 白字，视觉停顿） -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:24px 0 0;">
+  <div style="background:linear-gradient(135deg,#5b7a6f 0%,#6b8e80 100%);border-radius:8px;padding:28px 24px;text-align:center;box-shadow:0 2px 8px rgba(91,122,111,0.2);">
+    <div style="color:rgba(255,255,255,0.7);font-size:12px;letter-spacing:2px;margin-bottom:12px;">{{READER_NAME}} 说</div>
+    <div style="color:#fff;font-size:17px;line-height:1.9;font-weight:500;">
+      {{QUOTE_TEXT}}
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 行动清单（彩色左边框 + 时间标签） -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:28px 0 0;">
+  <div style="font-size:18px;font-weight:700;color:#5b7a6f;margin-bottom:4px;padding-left:8px;border-left:3px solid #5b7a6f;">{{CHECKLIST_TITLE}}</div>
+  <div style="font-size:13px;color:#aaa;margin-bottom:12px;padding-left:11px;">截图或打印，照着做</div>
+  {{ACTION_STEPS}}
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 横向对比表 -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:28px 0 0;">
+  <div style="font-size:18px;font-weight:700;color:#5b7a6f;margin-bottom:4px;padding-left:8px;border-left:3px solid #5b7a6f;">{{COMPARISON_TITLE}}</div>
+  <div style="font-size:13px;color:#aaa;margin-bottom:12px;padding-left:11px;">{{COMPARISON_SUBTITLE}}</div>
+  <div style="background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);overflow-x:auto;">
+    {{COMPARISON_TABLE}}
+  </div>
+  {{COMPARISON_TIP}}
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 延伸推荐卡片（3 本书） -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:28px 0 0;">
+  <div style="font-size:18px;font-weight:700;color:#5b7a6f;margin-bottom:4px;padding-left:8px;border-left:3px solid #5b7a6f;">读完这本，接下来看什么</div>
+  <div style="font-size:13px;color:#aaa;margin-bottom:12px;padding-left:11px;">三本延伸推荐 · 可在后续安排专周解读</div>
+  {{RECOMMENDATION_CARDS}}
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 结尾互动 -->
+<!-- ═══════════════════════════════════════════ -->
+<div style="margin:28px 0 0;">
+  <div style="background:linear-gradient(135deg,#5b7a6f 0%,#6b8e80 100%);border-radius:8px;padding:28px 24px;text-align:center;box-shadow:0 2px 8px rgba(91,122,111,0.2);">
+    <div style="color:#fff;font-size:15px;line-height:2;font-weight:500;">
+      {{CLOSING_QUOTE}}
+    </div>
+    <div style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:16px;">—— {{BOOK_AUTHOR}} · {{READER_NAME}} 解读</div>
+  </div>
+</div>
+
+<div style="margin:24px 0 32px;text-align:center;">
+  <div style="font-size:14px;color:#8b7355;margin-bottom:12px;">{{INTERACTION_PROMPT}}</div>
+  <div style="background:#faf7f3;border-radius:20px;display:inline-block;padding:8px 24px;font-size:13px;color:#5b7a6f;">
+    🎧 全七期音频已上线 · 搜索「路上书简」
+  </div>
+  <div style="margin-top:18px;color:#aaa;font-size:12px;">
+    下周预告：{{NEXT_WEEK_PREVIEW}}
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center;padding:24px;color:#ccc;font-size:11px;">
+  路上书简 · 通勤路上的读书伙伴
+</div>
+</body></html>
