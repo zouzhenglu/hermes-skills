@@ -1,7 +1,7 @@
 ---
 name: lushang-shujian-pipeline
 description: "路上书简知识栏目全自动内容流水线：拆书→脚本→音频→图文→知识卡片。"
-version: 1.2.0
+version: 1.3.0
 triggers:
   - 路上书简
   - 知识栏目
@@ -336,7 +336,7 @@ python3 scripts/wechat_publish.py {book_id} --episodes --ep ep01  # 只发一期
    "
    ```
 3. 汇报产出清单
-4. **👉 执行 Phase 9 经验归档**
+4. **👉 执行 Phase 9 经验归档 + Phase 10 Git 备份**
 
 ### Phase 9: 经验归档到 Wiki ⭐
 
@@ -380,6 +380,61 @@ python3 scripts/wechat_publish.py {book_id} --episodes --ep ep01  # 只发一期
 - 不要建重复页面（先读 index.md 确认是否已有）
 - 不要写流水账（只记录有复用价值的经验）
 - 不要跳过（这是「以后永不重复犯错」的基础）
+
+### Phase 10: Git 备份与版本发布 🔄
+
+> **每次发布完成后自动执行。Git 是防止灾难性数据丢失的最后一道防线。**
+
+涉及 3 个 Git 仓库：
+
+| 仓库 | 本地路径 | GitHub |
+|------|---------|--------|
+| knowledge-column | `~/knowledge-column/` | `zouzhenglu/hermesAliRepo` |
+| media-wiki | `~/wiki/` | `zouzhenglu/media-wiki` |
+| hermes-skills | `~/.hermes/skills/` | `zouzhenglu/hermes-skills` |
+
+#### 操作步骤
+
+```bash
+# 1. knowledge-column — 提交产出文件变更
+cd ~/knowledge-column
+git add -A
+git commit -m "{book_id}: {描述}"   # 例: "book-001: 断舍离 7 期音频+文章完成"
+git tag "{book_id}-v{version}"      # 例: "book-001-v1"
+git push && git push --tags
+
+# 2. wiki — 提交经验记录变更
+cd ~/wiki
+git add -A
+if git diff --cached --quiet; then
+  echo "wiki: 无变更"
+else
+  git commit -m "{book_id}: {经验摘要}"
+  git push
+fi
+
+# 3. skills — 提交 skill 变更（如有）
+cd ~/.hermes/skills
+git add -A
+if git diff --cached --quiet; then
+  echo "skills: 无变更"
+else
+  git commit -m "skills: {变更描述}"
+  git push
+fi
+```
+
+#### Tag 命名规范
+- 格式: `{book_id}-v{version}` — 例: `book-001-v1`, `book-001-v2`
+- 修复性变更（修 bug/修错误）用 patch 版本: `book-001-v1.1`
+- 重大重构用 major: `book-002-v2`
+- 永远不删除旧 tag，保留所有发布记录
+
+#### 原则
+- **自动但不盲目** — commit 之前 `git diff --stat` 确认变更范围
+- **变更内容写入 commit message** — 不要写 "update" 或 "fix"
+- **tag 标记里程碑** — 每次完整发布至少打一个 tag
+- **push 后验证** — `git ls-remote --tags origin` 确认 tag 已推送
 
 ## 读者风格速查
 
