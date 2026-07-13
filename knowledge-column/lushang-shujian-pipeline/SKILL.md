@@ -399,8 +399,8 @@ python3 scripts/wechat_publish.py {book_id} --episodes --ep ep01  # 只发一期
 # 1. knowledge-column — 提交产出文件变更
 cd ~/knowledge-column
 git add -A
-git commit -m "{book_id}: {描述}"   # 例: "book-001: 断舍离 7 期音频+文章完成"
-git tag "{book_id}-v{version}"      # 例: "book-001-v1"
+git commit -m "{book_id}-{书名}: {描述}"   # 例: "book-001-断舍离: 7期音频+文章完成"
+git tag "{book_id}-{书名}-v{version}"      # 例: "book-001-断舍离-v1"
 git push && git push --tags
 
 # 2. wiki — 提交经验记录变更
@@ -425,9 +425,9 @@ fi
 ```
 
 #### Tag 命名规范
-- 格式: `{book_id}-v{version}` — 例: `book-001-v1`, `book-001-v2`
-- 修复性变更（修 bug/修错误）用 patch 版本: `book-001-v1.1`
-- 重大重构用 major: `book-002-v2`
+- 格式: `{book_id}-{书名}-v{version}` — 例: `book-001-断舍离-v1`, `book-002-专注-v1`
+- 修复性变更用 patch: `book-001-断舍离-v1.1`
+- 纯英文书名用英文: `book-003-atomic-habits-v1`
 - 永远不删除旧 tag，保留所有发布记录
 
 #### 原则
